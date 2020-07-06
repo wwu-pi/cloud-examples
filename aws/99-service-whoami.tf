@@ -55,8 +55,7 @@ resource "aws_security_group" "example-whoami" {
     from_port = 8000
     to_port   = 8000
     protocol  = "tcp"
-    # cidr_blocks = [aws_vpc.example.cidr_block]
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [aws_vpc.example.cidr_block]
   }
 
   egress {
