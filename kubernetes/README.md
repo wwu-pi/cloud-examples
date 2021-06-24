@@ -18,8 +18,11 @@ $ kubectl get pods -n ingress-nginx
 Create example workload
 
 ```sh
-$ kubectl apply -f workload/
-$ watch curl -sS http://localhost/whoami
+$ kubectl apply -f workloads/whoami
+$ kubectl apply -f workloads/wordpress
+
+$ watch kubectl get all --all-namespaces
+$ watch -n 0.2 curl -sS http://localhost/whoami
 ```
 
 Delete cluster:
