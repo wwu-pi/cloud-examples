@@ -23,6 +23,7 @@ aws_session_token = <token>
 The following command can take several minutes to complete:
 
 ```sh
+$ terraform init
 $ terraform apply
 ```
 
