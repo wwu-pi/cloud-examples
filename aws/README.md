@@ -29,7 +29,8 @@ $ terraform apply
 ## Configure `kubectl`
 
 ```sh
-$ mkdir ~/.kube
+$ mkdir -p ~/.kube
+$ mv ~/.kube/config ~/.kube/config.old
 $ terraform output -raw kubeconfig > ~/.kube/config
 ```
 
@@ -37,4 +38,5 @@ $ terraform output -raw kubeconfig > ~/.kube/config
 
 ```sh
 $ terraform destroy
+$ mv ~/.kube/config.old ~/.kube/config
 ```
