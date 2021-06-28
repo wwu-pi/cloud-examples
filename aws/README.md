@@ -11,7 +11,7 @@ This example requires that the following commands are installed:
 Make sure to configure your AWS credentials in `~/.aws/credentials`:
 
 ```ini
-[aws]
+[default]
 region = us-east-1
 aws_access_key_id = <key>
 aws_secret_access_key = <secret>
