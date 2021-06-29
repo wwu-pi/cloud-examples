@@ -35,9 +35,35 @@ $ mv ~/.kube/config ~/.kube/config.old
 $ terraform output -raw kubeconfig > ~/.kube/config
 ```
 
-## Delete AWS resources
+## Install Kubernetes Cluster Components
+
+Install controller for load balancer and ingress:
 
 ```sh
+$ kubectl apply -f ingress
+$ terraform output -raw ServiceAccount-aws-load-balancer-controller | kubectl apply -f -
+```
+
+Install controller for block storage
+
+```sh
+$ kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.1"
+$ terraform output -raw ServiceAccount-ebs-csi-controller-sa | kubectl apply -f -
+```
+
+## Deploy Workloads
+
+```sh
+$ kubectl apply -f workloads/whoami
+$ kubectl apply -f workloads/wordpress
+```
+
+## Delete Resources
+
+```sh
+$ kubectl delete -f workloads/whoami
+$ kubectl delete -f workloads/wordpress
+
 $ terraform destroy
 $ mv ~/.kube/config.old ~/.kube/config
 ```

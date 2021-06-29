@@ -23,6 +23,9 @@ resource "aws_subnet" "example_public" {
 
   tags = {
     Name = format("example-public-%02d", count.index + 1)
+
+    "kubernetes.io/role/elb"        = "1"
+    "kubernetes.io/cluster/example" = "owned"
   }
 }
 
@@ -35,6 +38,9 @@ resource "aws_subnet" "example_private" {
 
   tags = {
     Name = format("example-private-%02d", count.index + 1)
+
+    "kubernetes.io/role/internal-elb" = "1"
+    "kubernetes.io/cluster/example"   = "owned"
   }
 }
 

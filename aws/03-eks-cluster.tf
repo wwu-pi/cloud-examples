@@ -47,34 +47,18 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_example-AmazonEKSVPCResou
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
 }
 
-output "kubeconfig" {
-  value = <<EOF
-apiVersion: v1
-kind: Config
-preferences: {}
-clusters:
-  - name: example
-    cluster:
-      certificate-authority-data: ${aws_eks_cluster.example.certificate_authority[0].data}
-      server: ${aws_eks_cluster.example.endpoint}
-users:
-  - name: example
-    user:
-      exec:
-        apiVersion: client.authentication.k8s.io/v1alpha1
-        command: aws
-        args:
-          - --region
-          - us-east-1
-          - eks
-          - get-token
-          - --cluster-name
-          - ${aws_eks_cluster.example.name}
-contexts:
-  - name: example
-    context:
-      cluster: example
-      user: example
-current-context: example
-EOF
+data "tls_certificate" "example" {
+  url = aws_eks_cluster.example.identity[0].oidc[0].issuer
+}
+
+resource "aws_iam_openid_connect_provider" "eks_example" {
+  url = aws_eks_cluster.example.identity[0].oidc[0].issuer
+
+  client_id_list = [
+    "sts.amazonaws.com",
+  ]
+
+  thumbprint_list = [
+    data.tls_certificate.example.certificates[0].sha1_fingerprint,
+  ]
 }
