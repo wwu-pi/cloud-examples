@@ -1,0 +1,25 @@
+version: "3.8"
+
+volumes:
+  mysql: {}
+
+services:
+  mysql:
+    image: docker.io/mysql:8.0
+    environment:
+      MYSQL_DATABASE: example
+      MYSQL_USER: example
+      MYSQL_PASSWORD: example
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    volumes:
+      - mysql:/var/lib/mysql
+
+  wordpress:
+    image: docker.io/wordpress:6.2
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: example
+      WORDPRESS_DB_PASSWORD: example
+      WORDPRESS_DB_NAME: example
+    ports:
+      - "80:80"
